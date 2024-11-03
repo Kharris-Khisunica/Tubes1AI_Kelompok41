@@ -39,7 +39,13 @@ public:
     // Fungsi Add Decision
     void addNextStep(Cube nextState, int value1, int value2);
 
-    virtual void generateAllNeighbors() = 0;
+    // Fungsi Generate Neighbor
+    tuple<Cube, int, int, int> generateRandomNeighbor(Cube state);
+    vector<tuple<Cube, int, int, int>> generateAllNeighbors();
+
+    // Fungsi Generate Random Value
+    int generateRandomInteger(int minValue, int maxValue);
+    double generateRandomRealNumber(double minValue, double maxValue);
 };
 
 #endif

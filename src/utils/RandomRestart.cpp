@@ -1,5 +1,6 @@
 #include "../header/RandomRestart.h"
 #include <random>
+#include <climits>
 
 RandomRestart::RandomRestart(Cube init, int maxRestarts, int maxIterationsPerRestart) 
     : LocalSearch(init), maxRestarts(maxRestarts), maxIterationsPerRestart(maxIterationsPerRestart) {
