@@ -142,49 +142,45 @@ Cube Cube::generateNeighbor(int x1, int y1, int z1, int x2, int y2, int z2) {
 }
 
 // Fungsi Print Jaring-Jaring Kubus
-void Cube::printCube() { 
-    cout << "Sisi X Kubus:" << endl;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            for (int k = 0; k < size; k++)
-            {
-                cout << setw(4) << matrix[i][j][k] << " ";
+void Cube::printCube(ofstream& out) {
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int z = 0; z < size; z++) {
+                out << matrix[x][y][z] << " ";
             }
-            cout << endl;
+            out << endl;
         }
-        cout << endl;
     }
-    cout << endl;
+}
 
-    cout << "Sisi Y Kubus:" << endl;
-    for (int j = 0; j < size; j++)
-    {
-        for (int i = 0; i < size; i++)
-        {
-            for (int k = 0; k < size; k++)
-            {
-                cout << setw(4) << matrix[i][j][k] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
+// Fungsi Load Cube dari File
+bool Cube::loadFromFile(const string& filename) {
+    ifstream inputFile(filename);
+    if (!inputFile.is_open()) {
+        cerr << "Error: Unable to open file " << filename << endl;
+        return false;
     }
-    cout << endl;
 
-    cout << "Sisi Z Kubus:" << endl;
-    for (int k = 0; k < size; k++)
-    {
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                cout << setw(4) << matrix[i][j][k] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
+    int inputSize;
+    inputFile >> inputSize;
+    if (inputSize != size) {
+        cerr << "Error: Cube size in file does not match the expected size." << endl;
+        return false;
     }
-    cout << endl;
+
+    for (int z = 0; z < size; z++) {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                int value;
+                if (!(inputFile >> value)) {
+                    cerr << "Error: Invalid cube data format." << endl;
+                    return false;
+                }
+                setValue(z, x, y, value);
+            }
+        }
+    }
+
+    inputFile.close();
+    return true;
 }
