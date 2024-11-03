@@ -1,6 +1,7 @@
 #include <iostream>
 #include "header/Cube.h"
 #include "header/SteepestAscent.h"
+#include "header/Sideways.h"
 
 int main() {
     Cube initialCube;
@@ -8,7 +9,7 @@ int main() {
     initialCube.printCube();
     cout << "Objective Function Value: " << initialCube.objectiveFunction() << endl;
 
-    SteepestAscent steepest(initialCube);
+    Sideways steepest(initialCube, 10);
 
     steepest.Algorithm();
 
