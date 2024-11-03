@@ -1,6 +1,7 @@
 #include <iostream>
 #include "header/Cube.h"
 #include "header/SteepestAscent.h"
+#include "header/GeneticAlgorithm.h"
 
 int main() {
     Cube initialCube;
@@ -8,7 +9,7 @@ int main() {
     initialCube.printCube();
     cout << "Objective Function Value: " << initialCube.objectiveFunction() << endl;
 
-    SteepestAscent steepest(initialCube);
+    GeneticAlgorithm steepest(initialCube, 20, 100);
 
     steepest.Algorithm();
 

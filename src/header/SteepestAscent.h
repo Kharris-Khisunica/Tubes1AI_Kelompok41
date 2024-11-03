@@ -11,8 +11,6 @@ public:
     // Constructor
     SteepestAscent(Cube init);
 
-    void generateAllNeighbors() override;
-
     void Algorithm();
 };
 

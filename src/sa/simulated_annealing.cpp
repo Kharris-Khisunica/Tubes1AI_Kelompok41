@@ -4,7 +4,7 @@
 using namespace std;
 
 
-class sa{
+class sa {
 
 private:
     const double init_temp = 100;
