@@ -11,7 +11,7 @@ using namespace std;
 
 class Cube {
 private:
-    static const int size = 3;
+    static const int size = 5;
     int matrix[size][size][size];
     static const int magicnumber = size * (size*size*size + 1)/2;
 

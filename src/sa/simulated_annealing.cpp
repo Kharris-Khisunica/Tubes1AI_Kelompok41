@@ -1,30 +1,15 @@
-#include <iostream>
-#include <cmath>
-#include "utils/Cube.cpp"
-using namespace std;
+
+#include "./header/simulated_annealing.h"
 
 
-class sa{
-
-private:
-    const double init_temp = 100;
-    const double cutoff = 0.5;
-    const double rate = 1 - 0.0001;
-    const double minTemp = 0.001;
-    const int maxIter = 1000;
-
-    vector<Cube> cubeSeq; //Simpan sequence of Cube, untuk visualisasi
-    Cube bestCube; //Cube terbaik
-
-public:
-    double nextTemp(double currtemp){
+    double SA::nextTemp(double currtemp){
         return currtemp*rate;
     }
 
-    bool isAccepted(const Cube& nowCube,const Cube& neighborCube, double currTemp){
+    bool SA::isAccepted(Cube nowCube,Cube neighborCube, double currTemp){
 
-        double stateValueCurr = getValue(nowCube);
-        double stateValueNeig = getValue(neighborCube);
+        double stateValueCurr = nowCube.objectiveFunction();
+        double stateValueNeig = neighborCube.objectiveFunction();
         // TENTUIN, DELTA E nya mau gimana
         double deltaE = stateValueNeig - stateValueCurr;
 
@@ -36,19 +21,38 @@ public:
         }
     }
 
-    void simulatedAnnealing(){
+    pair<int*, int*> SA::generateNeighborLoc(){
+        static int set1[3], set2[3];
+        
+        for (int i=0; i<3; i++){
+            set1[i] = rand()%5;
+        }
+        do{
+            for (int i=0; i<3; i++){
+            set2[i] = rand()%5;
+            }
+        }while(equal(begin(set1), end(set1), begin(set2)));
+
+        return make_pair(set1,set2);
+    }
+
+    void SA::simulatedAnnealing(){
         
         // Inisiasi
         int currIter = 0;
         double currTemp = init_temp;
         Cube currCube;
         currCube.randomizeCube();
+        bestCube = currCube;
 
         // While currIter < maxIter:
         while (currIter < maxIter && currTemp > minTemp)
         {
             // Generate One Neighbor secara random
-            Cube neigCube = currCube.randomSwap();
+            auto loc = generateNeighborLoc();
+            int* loc1 = loc.first;
+            int* loc2 = loc.second;
+            Cube neigCube = currCube.generateNeighbor(loc1[0],loc1[1],loc1[2],loc2[0],loc2[1],loc2[2]);
 
 
             // Cek Acceptability
@@ -56,7 +60,7 @@ public:
                 currCube = neigCube;
                 cubeSeq.push_back(currCube);
                 
-                if(getValue(currCube) > getValue(bestCube)){
+                if(currCube.objectiveFunction() > bestCube.objectiveFunction()){
                     bestCube = currCube;
                 }
             }
@@ -71,11 +75,10 @@ public:
 
     };
 
-    vector<Cube> getCubeSeq() const{
+    vector<Cube> SA::getCubeSeq() const{
         return cubeSeq;
     }
     
-    Cube getBestCube() const{
+    Cube SA::getBestCube() const{
         return bestCube;
     }
-};
