@@ -2,6 +2,7 @@
 #include "header/Cube.h"
 #include "header/SteepestAscent.h"
 #include "header/Sideways.h"
+#include "header/RandomRestart.h"
 
 int main() {
     Cube initialCube;
@@ -9,8 +10,8 @@ int main() {
     initialCube.printCube();
     cout << "Objective Function Value: " << initialCube.objectiveFunction() << endl;
 
-    Sideways steepest(initialCube, 10);
-
+    // Sideways steepest(initialCube, 10);
+    RandomRestart steepest(initialCube, 10, 100);
     steepest.Algorithm();
 
     cout << "All Steps:" << endl;

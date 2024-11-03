@@ -47,20 +47,17 @@ void Sideways::Algorithm() {
             int swappedValue1 = get<2>(neighborTuple);
             int swappedValue2 = get<3>(neighborTuple);
 
-            // Check if neighbor has a better or equal objective value
             if (neighborObjectiveValue > currentObjectiveValue) {
-                // Better solution found
                 currentState = neighbor;
                 currentObjectiveValue = neighborObjectiveValue;
                 foundBetter = true;
-                sidewaysMoves = 0; // Reset sideways move count
+                sidewaysMoves = 0; 
                 addNextStep(currentState, swappedValue1, swappedValue2);
                 break;
             } else if (neighborObjectiveValue == currentObjectiveValue && sidewaysMoves < sidewaysMoveLimit) {
-                // Sideways move
                 currentState = neighbor;
                 foundBetter = true;
-                sidewaysMoves++; // Increment sideways move count
+                sidewaysMoves++;
                 addNextStep(currentState, swappedValue1, swappedValue2);
                 break;
             }
