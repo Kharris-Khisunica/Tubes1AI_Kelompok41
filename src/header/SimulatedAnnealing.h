@@ -23,6 +23,7 @@ private:
     vector<tuple<Cube,int,int,int>> neighbourValue;
     vector<double> localOptSeq;
     Cube bestCube; //Cube terbaik
+    vector<tuple<Cube, int, int, double>> allStepSA;
 
 public:
 
@@ -36,7 +37,9 @@ public:
     
     void Algorithm();
 
-    void addNextStep(Cube nextState, int value1, int value2, double value3) override;
+    void addNextStepSA(Cube nextState, int value1, int value2, double value3);
+
+    vector<tuple<Cube, int, int, double>> getAllStepsSA();
 };
 
 #endif

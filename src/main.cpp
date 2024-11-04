@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
         SimulatedAnnealing sa(initialCube, init_temp, cutoff, coolingRate, minTemp, maxIter, totalLocalOptCount);
         sa.Algorithm();
 
-        vector<tuple<Cube, int, int>> steps = sa.getAllSteps();
+        vector<tuple<Cube, int, int, double>> steps = sa.getAllStepsSA();
         int totalSteps = steps.size();
         double timeTaken = sa.getTimeTaken();
         int totalCubesGenerated = sa.getTotalState();
@@ -129,7 +129,8 @@ int main(int argc, char* argv[]) {
                    << timeTaken << " " << (isFound ? "1" : "0") << endl;
 
         int initialObjValue = initialCube.objectiveFunction();
-        outputFile << "0 " << initialObjValue << " 0 0" << endl;
+        outputFile << "0 " << initialObjValue << " 0 0 0" << endl;
+        initialCube.printCube(outputFile);
 
         int stepNumber = 1;
 
@@ -138,8 +139,9 @@ int main(int argc, char* argv[]) {
             int objValue = cube.objectiveFunction();
             int value1 = get<1>(step);
             int value2 = get<2>(step);
+            int value3 = get<3>(step);
 
-            outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << endl;
+            outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << " " << value3 << endl;
 
             cube.printCube(outputFile);
 

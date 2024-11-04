@@ -83,6 +83,7 @@ def parse_output_file_SA(file_path):
             is_found = metadata[4] == '1'
 
             steps = []
+            acceptance_probabilities = []
             index = 1
 
             while index < len(lines):
@@ -92,7 +93,9 @@ def parse_output_file_SA(file_path):
                     obj_value = int(step_info[1])
                     value1 = int(step_info[2])
                     value2 = int(step_info[3])
-                    value3 = float(step_info[4])
+                    acceptance_probability = float(step_info[4])
+                    acceptance_probabilities.append(acceptance_probability)
+
                     index += 1
 
                     matrix = [[[0 for _ in range(size)] for _ in range(size)] for _ in range(size)]
@@ -106,11 +109,11 @@ def parse_output_file_SA(file_path):
                                 matrix[z][x][y] = row[y]
                             index += 1
                     
-                    steps.append((matrix, obj_value, value1, value2,value3))
+                    steps.append((matrix, obj_value, value1, value2))
                 else:
                     index += 1
 
-            return size, total_steps, total_neighbors, time_taken, is_found, steps
+            return size, total_steps, total_neighbors, time_taken, is_found, steps, acceptance_probabilities
 
     except FileNotFoundError:
         print(f"Error: File '{file_path}' not found.")
@@ -122,27 +125,34 @@ def parse_output_file_SA(file_path):
         print(f"An error occurred while reading the file: {e}")
         return None
     
-def create_matplot(steps, algorithm):
+def create_matplot(steps, algorithm, acceptance_probabilities=None):
     step_numbers = list(range(len(steps)))
     objective_values = [step[1] for step in steps]
-    avg_objective_values = [step[3] for step in steps]
-    acceptance_probability_values = [step[4] for step in steps]
-
     
     plt.figure(figsize=(10, 6))
     plt.plot(step_numbers, objective_values, linestyle='-', color='b', label="Objective Values")
-    if (algorithm == "GeneticAlgorithm"):
+    
+    if algorithm == "GeneticAlgorithm":
+        avg_objective_values = [step[3] for step in steps]
         avg_objective_values[0] = objective_values[0]
         plt.plot(step_numbers, avg_objective_values, linestyle='-', color='r', label="Average Objective Values")
-    elif (algorithm == "SimulatedAnnealing"):
-        plt.plot(step_numbers,acceptance_probability_values, linestyle='-', label="Acceptance Probability to Step Numbers" )
-
 
     plt.title('Objective Function Value over Steps')
     plt.xlabel('Step Number')
     plt.ylabel('Objective Function Value')
+    plt.legend()
     plt.grid(True)
     plt.show()
+
+    if algorithm == "SimulatedAnnealing" and acceptance_probabilities:
+        plt.figure(figsize=(10, 6))
+        plt.plot(step_numbers, acceptance_probabilities, linestyle='-', color='g', label="Acceptance Probability")
+        plt.title('Acceptance Probability over Steps (Simulated Annealing)')
+        plt.xlabel('Step Number')
+        plt.ylabel('Acceptance Probability')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
 def visualize_cube_step(matrix, obj_value, step_num, value1, value2, ax, canvas, algorithm):
     ax.clear()
@@ -229,15 +239,28 @@ def run_algorithm(algorithm, input_file=None):
             result = parse_output_file(file_path)
 
         if result:
-            size, total_steps, total_neighbors, time_taken, is_found, steps = result
+            size = 0 
+            total_steps = 0 
+            total_neighbors = 0
+            time_taken = 0
+            is_found = 0
+            steps = 0
+            acceptance_probabilities = 0
+            if algorithm == "SimulatedAnnealing":
+                size, total_steps, total_neighbors, time_taken, is_found, steps, acceptance_probabilities = result
+            else:
+                size, total_steps, total_neighbors, time_taken, is_found, steps = result
             print(f"Cube Size: {size}")
             print(f"Total Steps: {total_steps}")
             print(f"Total Neighbors Evaluated: {total_neighbors}")
             print(f"Time Taken: {time_taken:.2f} seconds")
             print(f"Optimal Solution Found: {'Yes' if is_found else 'No'}\n")
 
-            create_matplot(steps, algorithm)
             create_gui(steps, size, total_steps, total_neighbors, time_taken, is_found, algorithm)
+            if algorithm == "SimulatedAnnealing":
+                create_matplot(steps, algorithm, acceptance_probabilities)
+            else:
+                create_matplot(steps, algorithm)
         else:
             print("Failed to parse the output file.")
     except subprocess.CalledProcessError:

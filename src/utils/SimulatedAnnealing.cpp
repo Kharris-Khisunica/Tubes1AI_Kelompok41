@@ -1,6 +1,4 @@
-
 #include "../header/SimulatedAnnealing.h"
-#include "SimulatedAnnealing.h"
 
     SimulatedAnnealing::SimulatedAnnealing(Cube init, double init_temp, double cutoff, double coolingRate, double minTemp, int maxIter, int totalLocalOptCount)
     : LocalSearch(init), init_temp(init_temp), cutoff(cutoff), coolingRate(coolingRate), minTemp(minTemp), maxIter(maxIter), totalLocalOptCount(totalLocalOptCount) {}
@@ -34,15 +32,15 @@
             if(deltaE > 0){
                 currentState = neighbor;
                 currentObjValue = neighborObjValue;
-                addNextStep(currentState,swappedValue1,swappedValue2,1);
+                addNextStepSA(currentState,swappedValue1,swappedValue2,1);
                 
                 
                 
             }
-            else if (deltaE <=0 && ap = accProbs(deltaE, currTemp) > cutoff){
+            else if (deltaE <=0 && accProbs(deltaE, currTemp) > cutoff){
                 currentState = neighbor;
                 currentObjValue = neighborObjValue;
-                addNextStep(currentState,swappedValue1,swappedValue2,accProbs(deltaE,currTemp));
+                addNextStepSA(currentState,swappedValue1,swappedValue2,accProbs(deltaE,currTemp));
                 
             }
 
@@ -56,8 +54,12 @@
         totalLocalOptCount = localOptCount;
     }
 
-    void SimulatedAnnealing::addNextStep(Cube nextState, int value1, int value2, int value3)
+    void SimulatedAnnealing::addNextStepSA(Cube nextState, int value1, int value2, double value3)
     {
-        allStep.emplace_back(nextState, value1, value2,value3);
+        allStepSA.emplace_back(nextState, value1, value2,value3);
         totalStep++;
+    }
+
+    vector<tuple<Cube, int, int, double>> SimulatedAnnealing::getAllStepsSA() {
+        return allStepSA;
     }
