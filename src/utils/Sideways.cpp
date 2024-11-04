@@ -1,7 +1,7 @@
 #include "../header/Sideways.h"
 
-Sideways::Sideways(Cube init, int sidewaysLimit) 
-    : LocalSearch(init), sidewaysMoveLimit(sidewaysLimit) {}
+// Constructor
+Sideways::Sideways(Cube init, int sidewaysLimit) : LocalSearch(init), sidewaysMoveLimit(sidewaysLimit) {}
 
 
 void Sideways::Algorithm() {
@@ -9,37 +9,36 @@ void Sideways::Algorithm() {
 
     currentState = initialState;
     int currentObjectiveValue = currentState.objectiveFunction();
-    int sidewaysMoves = 0;
+
     bool foundBetter = true;
 
     while (foundBetter) {
         foundBetter = false;
         generateAllNeighbors();
 
-        for (const auto &neighborTuple : neighborValues) {
-            Cube neighbor = get<0>(neighborTuple);
-            int neighborObjectiveValue = get<1>(neighborTuple);
-            int swappedValue1 = get<2>(neighborTuple);
-            int swappedValue2 = get<3>(neighborTuple);
+        Cube bestNeighbor;
+        int bestNeighborValue = currentObjectiveValue;
+        int value1 = 0, value2 = 0;
 
-            if (neighborObjectiveValue > currentObjectiveValue) {
-                currentState = neighbor;
-                currentObjectiveValue = neighborObjectiveValue;
+        for (auto &neighborTuple : neighborValues) {
+            Cube neighbor = std::get<0>(neighborTuple);
+            int neighborObjectiveValue = std::get<1>(neighborTuple);
+            int currentValue1 = std::get<2>(neighborTuple);
+            int currentValue2 = std::get<3>(neighborTuple);
+
+            if (neighborObjectiveValue >= bestNeighborValue) {
+                bestNeighbor = neighbor;
+                bestNeighborValue = neighborObjectiveValue;
+                value1 = currentValue1;
+                value2 = currentValue2;
                 foundBetter = true;
-                sidewaysMoves = 0; 
-                addNextStep(currentState, swappedValue1, swappedValue2);
-                break;
-            } else if (neighborObjectiveValue == currentObjectiveValue && sidewaysMoves < sidewaysMoveLimit) {
-                currentState = neighbor;
-                foundBetter = true;
-                sidewaysMoves++;
-                addNextStep(currentState, swappedValue1, swappedValue2);
-                break;
             }
         }
 
-        if (!foundBetter || sidewaysMoves >= sidewaysMoveLimit) {
-            break;
+        if (foundBetter) {
+            currentState = bestNeighbor;
+            currentObjectiveValue = bestNeighborValue;
+            addNextStep(currentState, value1, value2);
         }
     }
 
@@ -51,3 +50,4 @@ void Sideways::Algorithm() {
     auto end = high_resolution_clock::now();
     timeTaken = duration_cast<duration<double>>(end - start).count();
 }
+

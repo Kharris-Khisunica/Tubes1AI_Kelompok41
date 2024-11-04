@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (algorithm == "RandomRestart") {
-        RandomRestart steepest(initialCube,100,100);
+        RandomRestart steepest(initialCube,2);
         steepest.Algorithm();
     }
     else {
