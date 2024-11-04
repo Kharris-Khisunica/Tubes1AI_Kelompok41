@@ -59,6 +59,7 @@ int main(int argc, char* argv[]) {
             int objValue = cube.objectiveFunction();
             int value1 = get<1>(step);
             int value2 = get<2>(step);
+        
 
             outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << endl;
 

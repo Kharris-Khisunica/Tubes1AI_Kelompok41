@@ -36,12 +36,7 @@ public:
     
     void Algorithm();
 
-    vector<double> getLocalOptSeq() const {return localOptSeq;}
-    int getTotalLocalOptCount() const {return totalLocalOptCount;}
-
-    
-
-    
+    void addNextStep(Cube nextState, int value1, int value2, double value3) override;
 };
 
 #endif

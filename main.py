@@ -63,18 +63,81 @@ def parse_output_file(file_path):
     except Exception as e:
         print(f"An error occurred while reading the file: {e}")
         return None
+
+def parse_output_file_SA(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+            if len(lines) < 1:
+                raise ValueError("File is empty or does not contain expected data.")
+
+            metadata = lines[0].strip().split()
+            if len(metadata) != 5:
+                raise ValueError("Metadata line is not in the expected format.")
+
+            size = int(metadata[0])
+            total_steps = int(metadata[1])
+            total_neighbors = int(metadata[2])
+            time_taken = float(metadata[3])
+            is_found = metadata[4] == '1'
+
+            steps = []
+            index = 1
+
+            while index < len(lines):
+                line = lines[index].strip()
+                if line and line.split()[0].isdigit():
+                    step_info = line.split()
+                    obj_value = int(step_info[1])
+                    value1 = int(step_info[2])
+                    value2 = int(step_info[3])
+                    value3 = float(step_info[4])
+                    index += 1
+
+                    matrix = [[[0 for _ in range(size)] for _ in range(size)] for _ in range(size)]
+
+                    for z in range(size):
+                        for x in range(size):
+                            if index >= len(lines):
+                                raise ValueError("Unexpected end of file while reading cube data.")
+                            row = list(map(int, lines[index].strip().split()))
+                            for y in range(size):
+                                matrix[z][x][y] = row[y]
+                            index += 1
+                    
+                    steps.append((matrix, obj_value, value1, value2,value3))
+                else:
+                    index += 1
+
+            return size, total_steps, total_neighbors, time_taken, is_found, steps
+
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return None
+    except ValueError as ve:
+        print(f"Value Error: {ve}")
+        return None
+    except Exception as e:
+        print(f"An error occurred while reading the file: {e}")
+        return None
     
 def create_matplot(steps, algorithm):
     step_numbers = list(range(len(steps)))
     objective_values = [step[1] for step in steps]
     avg_objective_values = [step[3] for step in steps]
+    acceptance_probability_values = [step[4] for step in steps]
+
     
     plt.figure(figsize=(10, 6))
     plt.plot(step_numbers, objective_values, linestyle='-', color='b', label="Objective Values")
     if (algorithm == "GeneticAlgorithm"):
         avg_objective_values[0] = objective_values[0]
         plt.plot(step_numbers, avg_objective_values, linestyle='-', color='r', label="Average Objective Values")
-        
+    elif (algorithm == "SimulatedAnnealing"):
+        plt.plot(step_numbers,acceptance_probability_values, linestyle='-', label="Acceptance Probability to Step Numbers" )
+
+
     plt.title('Objective Function Value over Steps')
     plt.xlabel('Step Number')
     plt.ylabel('Objective Function Value')
@@ -160,7 +223,10 @@ def run_algorithm(algorithm, input_file=None):
             subprocess.run(['./src/class/main', algorithm], check=True)
 
         file_path = 'output.txt'
-        result = parse_output_file(file_path)
+        if algorithm == "SimulatedAnnealing":
+            result = parse_output_file_SA(file_path)
+        else:    
+            result = parse_output_file(file_path)
 
         if result:
             size, total_steps, total_neighbors, time_taken, is_found, steps = result
