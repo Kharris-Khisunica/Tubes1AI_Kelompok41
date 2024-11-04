@@ -3,6 +3,7 @@
 #include <sstream>
 #include "header/Cube.h"
 #include "header/SteepestAscent.h"
+#include "header/SimulatedAnnealing.h"
 // Include other algorithm headers if needed
 
 using namespace std;
@@ -64,6 +65,9 @@ int main(int argc, char* argv[]) {
     }
     else if (algorithm == "GeneticAlgorithm") {
         
+    }
+    else if (algorithm == "SimulatedAnnealing"){
+
     }
     else {
         cerr << "Unknown algorithm: " << algorithm << endl;
