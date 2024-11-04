@@ -8,7 +8,7 @@ class RandomRestart : public LocalSearch {
 private:
     int maxRestarts;
     int maxIterationsPerRestart;
-    std::vector<std::tuple<Cube, int, int, int>> neighborValues;
+    // std::vector<std::tuple<Cube, int, int, int>> neighborValues;
     std::vector<int> iterationsPerRestart;
     int bestObjectiveValue;
     Cube bestState;
