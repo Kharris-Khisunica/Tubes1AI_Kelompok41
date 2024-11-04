@@ -70,9 +70,10 @@ def create_matplot(steps, algorithm):
     avg_objective_values = [step[3] for step in steps]
     
     plt.figure(figsize=(10, 6))
-    plt.plot(step_numbers, objective_values, linestyle='-', color='b')
+    plt.plot(step_numbers, objective_values, linestyle='-', color='b', label="Objective Values")
     if (algorithm == "GeneticAlgorithm"):
-        plt.plot(step_numbers, avg_objective_values, linestyle='-', color='r')
+        avg_objective_values[0] = objective_values[0]
+        plt.plot(step_numbers, avg_objective_values, linestyle='-', color='r', label="Average Objective Values")
         
     plt.title('Objective Function Value over Steps')
     plt.xlabel('Step Number')
