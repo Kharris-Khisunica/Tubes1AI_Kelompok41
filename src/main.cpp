@@ -5,6 +5,8 @@
 #include "header/SteepestAscent.h"
 #include "header/RandomRestart.h"
 #include "header/Stochastic.h"
+#include "header/SimulatedAnnealing.h"
+#include "header/Sideways.h"
 // #include "header/Sideways.h"
 
 using namespace std;
@@ -68,7 +70,69 @@ int main(int argc, char* argv[]) {
         
     }
     else if (algorithm == "SimulatedAnnealing"){
+         const double init_temp = 100;
+        const double cutoff = 0.5; //Batas minimum state value kalau lebih jelek
+        const double coolingRate = 1 - 0.0001;
+        const double minTemp = 1e-10;
+        const int maxIter = 1000;
+        int totalLocalOptCount;
 
+        SimulatedAnnealing sa(initialCube, init_temp, cutoff, coolingRate, minTemp, maxIter, totalLocalOptCount);
+        sa.Algorithm();
+        vector<tuple<Cube, int, int>> steps = sa.getAllSteps();
+        int totalSteps = steps.size();
+        double timeTaken = sa.getTimeTaken();
+        int totalCubesGenerated = sa.getTotalState();
+        bool isFound = sa.isFound();
+
+        outputFile << initialCube.getSize() << " " << totalSteps << " " << totalCubesGenerated << " " 
+                   << timeTaken << " " << (isFound ? "1" : "0") << endl;
+
+        int initialObjValue = initialCube.objectiveFunction();
+        outputFile << "0 " << initialObjValue << " 0 0" << endl;
+
+        int stepNumber = 1;
+
+        for (const auto& step : steps) {
+            Cube cube = get<0>(step);
+            int objValue = cube.objectiveFunction();
+            int value1 = get<1>(step);
+            int value2 = get<2>(step);
+
+            outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << endl;
+
+            cube.printCube(outputFile);
+
+            stepNumber++;
+        }
+    }
+    else if (algorithm == "SidewaysMove") {
+        Sideways steepest(initialCube, 100);
+        steepest.Algorithm();
+        vector<tuple<Cube, int, int>> steps = steepest.getAllSteps();
+        int totalSteps = steps.size();
+        double timeTaken = steepest.getTimeTaken();
+        int totalCubesGenerated = steepest.getTotalState();
+        bool isFound = steepest.isFound();
+        outputFile << initialCube.getSize() << " " << totalSteps << " " << totalCubesGenerated << " " 
+                   << timeTaken << " " << (isFound ? "1" : "0") << endl;
+        int initialObjValue = initialCube.objectiveFunction();
+        outputFile << "0 " << initialObjValue << " 0 0" << endl;
+        initialCube.printCube(outputFile);
+        int stepNumber = 1;
+        for (const auto& step : steps) {
+            Cube cube = get<0>(step);
+            int objValue = cube.objectiveFunction();
+            int value1 = get<1>(step);
+            int value2 = get<2>(step);
+            outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << endl;
+            cube.printCube(outputFile);
+            stepNumber++;
+        }
+    }
+    else if (algorithm == "RandomRestart") {
+        RandomRestart steepest(initialCube,100,100);
+        steepest.Algorithm();
     }
     else {
         cerr << "Unknown algorithm: " << algorithm << endl;
@@ -79,3 +143,4 @@ int main(int argc, char* argv[]) {
     outputFile.close();
     return 0;
 }
+
