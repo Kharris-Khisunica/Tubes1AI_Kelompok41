@@ -63,6 +63,18 @@ def parse_output_file(file_path):
     except Exception as e:
         print(f"An error occurred while reading the file: {e}")
         return None
+    
+def create_matplot(steps):
+    step_numbers = list(range(len(steps)))
+    objective_values = [step[1] for step in steps]
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(step_numbers, objective_values, linestyle='-', color='b')
+    plt.title('Objective Function Value over Steps')
+    plt.xlabel('Step Number')
+    plt.ylabel('Objective Function Value')
+    plt.grid(True)
+    plt.show()
 
 def visualize_cube_step(matrix, obj_value, step_num, value1, value2, ax, canvas):
     ax.clear()
@@ -149,6 +161,7 @@ def run_algorithm(algorithm, input_file=None):
             print(f"Time Taken: {time_taken:.2f} seconds")
             print(f"Optimal Solution Found: {'Yes' if is_found else 'No'}\n")
 
+            create_matplot(steps)
             create_gui(steps, size, total_steps, total_neighbors, time_taken, is_found)
         else:
             print("Failed to parse the output file.")
