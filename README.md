@@ -1,34 +1,33 @@
-## Tugas Besar 1 Intelegensi Artifisial
-Oleh:
-1. Eduardus Alvito Kristiadi (13522004)
-2. Irfan Sidiq Permana (13522007)
-3. Farel Winalda (13522047)
-4. Kharris Khisunica (13522051)
+# Tugas Besar 1 IF3170 Inteligensi Buatan
 
-### Prerequisites
+> Pencarian Solusi Diagonal Magic Cube dengan Local Search
 
-* Python version > 3.12
-* Pip
-* Git
-* WSL
-* C++
+## Deskripsi Persoalan
 
-### Installation
+Local Search Algorithm / Algoritma Pencarian Lokal merupakan algoritma pengoptimasian yang digunakan untuk menemukan solusi terbaik dalam pencarian ruang tertentu. Berbeda dengan metode pencarian global yang mengeksplor seluruh ruang solusi, algoritma pencarian lokal berfokus pada membuat perubahan secara bertahap untuk meningkatkan solusi saat ini hingga mencapai solusi optimal yang bersifat lokal. Namun, algoritma local search ini dapat terjebak di maksimum lokal yang belum tentu merupakan solusi maksimum global sehingga algoritma ini tidak menjamin keberhasilan mendapat solusi global. Dalam tugas besar 1 ini, algoritma local search digunakan untuk menyelesaikan permasalahan magic cube berukuran 5 x 5 x 5.
 
-1. Buka terminal pada wsl
-2. Clone repo ini dengan menjalankan command berikut ini
-   
-https://github.com/Kharris-Khisunica/Tubes1AI_Kelompok41.git
-   
 
-3. Masuk folder repo kemudian masuk ke folder src
-4. Install numpy, dan matplotlib menggunakan pip install dengan menjalankan perintah berikut
-   
-pip install numpy matplotlib
-   
+## Teknologi yang Dipakai
 
-5. Jalankan program main dengan perintah
+- Python dan C++
+- Matplotlib
+- Numpy
+- Tkinter
+- WSL
 
-    make clean
-    make
-    python3 main.py
+## Cara Menjalankan Program
+
+1. Clone repository ini dengan perintah `https://github.com/Kharris-Khisunica/Tubes1AI_Kelompok41.git`
+2. Buka root directory menggunakan **terminal WSL**. Bila tidak menggunakan terminal WSL, maka kemungkinan program akan error.
+3. Bila belum melakukan instalasi numpy, tkinter, dan/atau matplotlib, lakukan instalasi ketiga dependensi tersebut (misalnya dengan perintah `pip install numpy` dan/atau `pip install matplotlib`)
+4. Jalankan perintah `make clean` lalu `make` pada root direktori di terminal WSL untuk melakukan kompilasi program.
+3. Jalankan perintah `python main.py` atau `python3 main.py` pada root direktori di terminal WSL untuk menjalankan program.
+
+## Pembagian Tugas
+
+| NIM      | Pembagian Kerja |
+| -------- | ------------------- |
+| 13522004 | Random restart Hill Climbing, Sideways Hill Climbing, Stochastic Hill Climbing |
+| 13522007 | Genetic Algorithm, Position |
+| 13522047 | Utils, Visualisasi, Steepest Ascent Hill Climbing |
+| 13522051 | Simulated Annealing |
