@@ -18,18 +18,18 @@ GeneticAlgorithm::GeneticAlgorithm(Cube init, int populationSize, int maxIterati
 
 tuple<Cube, int> GeneticAlgorithm::chooseParent(vector<tuple<Cube, int>> &currentPopulation)
 {
-    int sumObjectiveValue = 0;
+    int sumFitnessValue = 0;
     for (int i = 0; i < populationSize; ++i)
     {
-        sumObjectiveValue += get<1>(currentPopulation[i]);
+        sumFitnessValue += get<0>(currentPopulation[i]).fitnessFunction();
     }
 
     vector<double> wheel(populationSize);
-    wheel[0] = get<1>(currentPopulation[0]) / (float) sumObjectiveValue * (-1);
+    wheel[0] = get<0>(currentPopulation[0]).fitnessFunction() / (float) sumFitnessValue;
 
     for (int i = 1; i < populationSize; ++i)
     {
-        wheel[i] = (get<1>(currentPopulation[i]) / (float) sumObjectiveValue) + wheel[i-1];
+        wheel[i] = (get<0>(currentPopulation[i]).fitnessFunction() / (float) sumFitnessValue) + wheel[i-1];
     }
 
     double randomProbability = generateRandomRealNumber(0.0, 1.0);
@@ -39,11 +39,10 @@ tuple<Cube, int> GeneticAlgorithm::chooseParent(vector<tuple<Cube, int>> &curren
     {
         if (wheel[i] > randomProbability)
         {
-            res = currentPopulation[i]; 
+            res = currentPopulation[i];
             break;
         }
     }
-
     return res;
 }
 
@@ -56,7 +55,6 @@ void GeneticAlgorithm::Algorithm()
 
     while (!found && currentIteration <= maxIteration)
     {
-        // cout << "Iterasi ke-" << currentIteration << ": " << endl;
         vector<tuple<Cube, int>> nextPopulation;
 
         while (!found && nextPopulation.size() < populationSize)
@@ -65,7 +63,6 @@ void GeneticAlgorithm::Algorithm()
             tuple<Cube, int> parent2 = chooseParent(currentPopulation);
 
             vector<tuple<Cube, int>> children = reproduce(parent1, parent2);
-            
             for (int i = 0; i < children.size(); ++i)
             {
                 double randomProbability = generateRandomRealNumber(0.0, 1.0);
@@ -107,8 +104,8 @@ void GeneticAlgorithm::Algorithm()
             }
         }
 
-        addNextStep(get<0>(bestIndividual), get<1>(bestIndividual), sumObjectiveValue / nextPopulation.size());
-        
+        addNextStep(get<0>(bestIndividual), 0, sumObjectiveValue / (float) nextPopulation.size());
+
         currentPopulation = nextPopulation;
         currentIteration++;
     }
@@ -133,7 +130,6 @@ vector<tuple<Cube, int>> GeneticAlgorithm::reproduce(tuple<Cube, int> &parent1, 
     int n = initialState.getSize();
     vector<Position> position1(pow(n, 3));
     vector<Position> position2(pow(n, 3));
-
     for (int i = 0; i < n; ++i)
     {
         for (int j = 0; j < n; ++j)
@@ -156,7 +152,6 @@ vector<tuple<Cube, int>> GeneticAlgorithm::reproduce(tuple<Cube, int> &parent1, 
         positionChild1[i] = position1[i];
         positionChild2[i] = position2[i];
     }
-
 
     vector<int> conflictingValues1;
     vector<int> conflictingValues2;

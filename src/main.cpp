@@ -3,6 +3,7 @@
 #include <sstream>
 #include "header/Cube.h"
 #include "header/SteepestAscent.h"
+#include "header/GeneticAlgorithm.h"
 #include "header/RandomRestart.h"
 #include "header/Stochastic.h"
 #include "header/SimulatedAnnealing.h"
@@ -67,7 +68,44 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (algorithm == "GeneticAlgorithm") {
-        
+        int populationSize;
+        cout << "Masukkan ukuran populasi: ";
+        cin >> populationSize;
+
+        int maxIteration;
+        cout << "Masukkan jumlah maksimal iterasi: ";
+        cin >> maxIteration;
+
+        GeneticAlgorithm genetic(initialCube, populationSize, maxIteration);
+        genetic.Algorithm();
+
+        vector<tuple<Cube, int, int>> steps = genetic.getAllSteps();
+        int totalSteps = steps.size();
+        double timeTaken = genetic.getTimeTaken();
+        int totalCubesGenerated = genetic.getTotalState();
+        bool isFound = genetic.isFound();
+
+        outputFile << initialCube.getSize() << " " << totalSteps << " " << totalCubesGenerated << " " 
+                   << timeTaken << " " << (isFound ? "1" : "0") << endl;
+
+        int initialObjValue = initialCube.objectiveFunction();
+        outputFile << "0 " << initialObjValue << " 0 0" << endl;
+        initialCube.printCube(outputFile);
+
+        int stepNumber = 1;
+        for (const auto& step : steps)
+        {
+            Cube cube = get<0>(step);
+            int objValue = cube.objectiveFunction();
+            int value1 = get<1>(step);
+            int value2 = get<2>(step);
+
+            outputFile << stepNumber << " " << objValue << " " <<  value1 << " " <<  value2 << endl;
+
+            cube.printCube(outputFile);
+
+            stepNumber++;
+        }
     }
     else if (algorithm == "SimulatedAnnealing"){
          const double init_temp = 100;

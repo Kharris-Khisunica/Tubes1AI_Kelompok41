@@ -30,6 +30,7 @@ public:
 
     // Fungsi menghitung State Value
     int objectiveFunction();
+    int fitnessFunction();
 
     // Fungsi Random Cube Initial
     Cube randomizeCube();
@@ -42,6 +43,8 @@ public:
 
     // Fungsi Load Cube dari File
     bool loadFromFile(const string& filename);
+
+    void displayCube();
 };
 
 #endif

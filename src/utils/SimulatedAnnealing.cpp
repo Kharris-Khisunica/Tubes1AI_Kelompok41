@@ -6,7 +6,7 @@
 
 
     
-    double accProbs(int deltaE,double currTemp){
+    double SimulatedAnnealing::accProbs(int deltaE,double currTemp){
         return exp(-deltaE/currTemp);
     }
 

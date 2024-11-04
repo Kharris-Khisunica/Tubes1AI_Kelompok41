@@ -184,3 +184,115 @@ bool Cube::loadFromFile(const string& filename) {
     inputFile.close();
     return true;
 }
+
+void Cube::displayCube() { 
+    cout << "Sisi X Kubus:" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            for (int k = 0; k < size; k++)
+            {
+                cout << setw(4) << matrix[i][j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << "Sisi Y Kubus:" << endl;
+    for (int j = 0; j < size; j++)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int k = 0; k < size; k++)
+            {
+                cout << setw(4) << matrix[i][j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    cout << "Sisi Z Kubus:" << endl;
+    for (int k = 0; k < size; k++)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                cout << setw(4) << matrix[i][j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+int Cube::fitnessFunction()
+{
+    int totalDifference = 0;
+
+    // Sumbu X
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            int rowSum = 0;
+            for (int k = 0; k < size; k++) {
+                rowSum += this->getValue(i, j, k);
+            }
+            totalDifference += (abs(rowSum - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+        }
+    }
+
+    // Sumbu Y
+    for (int j = 0; j < size; j++) {
+        for (int k = 0; k < size; k++) {
+            int colSum = 0;
+            for (int i = 0; i < size; i++) {
+                colSum += this->getValue(i, j, k);
+            }
+            totalDifference += (abs(colSum - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+        }
+    }
+
+    // Sumbu Z
+    for (int i = 0; i < size; i++) {
+        for (int k = 0; k < size; k++) {
+            int pillarSum = 0;
+            for (int j = 0; j < size; j++) {
+                pillarSum += this->getValue(i, j, k);
+            }
+            totalDifference += (abs(pillarSum - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+        }
+    }
+
+    // Semua diagonal sisi
+    for (int i = 0; i < size; i++) {
+        int mainDiagSum1 = 0;
+        int mainDiagSum2 = 0;
+        for (int j = 0; j < size; j++) {
+            mainDiagSum1 += this->getValue(i, j, j);
+            mainDiagSum2 += this->getValue(i, j, (size - 1) - j);
+        }
+        totalDifference += (abs(mainDiagSum1 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+        totalDifference += (abs(mainDiagSum2 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+    }
+
+    // Semua diagonal ruang
+    int spaceDiag1 = 0, spaceDiag2 = 0, spaceDiag3 = 0, spaceDiag4 = 0;
+    for (int i = 0; i < size; i++) {
+        spaceDiag1 += this->getValue(i, i, i);
+        spaceDiag2 += this->getValue(i, i, (size - 1) - i);
+        spaceDiag3 += this->getValue(i, (size - 1) - i, i);
+        spaceDiag4 += this->getValue(i, (size - 1) - i, (size - 1) - i);
+    }
+    totalDifference += (abs(spaceDiag1 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+    totalDifference += (abs(spaceDiag2 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+    totalDifference += (abs(spaceDiag3 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+    totalDifference += (abs(spaceDiag4 - magicnumber) <= magicnumber*0.08) ? 1 : 0;
+
+    return totalDifference;    
+}
