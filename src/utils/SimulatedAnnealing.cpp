@@ -17,7 +17,7 @@
         int currentObjValue = currentState.objectiveFunction();
         int currIter = 0;
         int localOptCount = 0;
-        int currTemp = init_temp;
+        double currTemp = init_temp;
 
         
         while(currIter < maxIter && currTemp > minTemp){
