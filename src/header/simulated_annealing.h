@@ -21,6 +21,8 @@ private:
     int set[3];
 
     vector<Cube> cubeSeq; //Simpan sequence of Cube, untuk visualisasi
+    vector<int> ObjFuncSeq; //Sequence of Objective Function untuk visualisasi
+    vector<double> localOptSeq; //Sequence of Local Optima (Yg masuk ke e^(-deltaE/T))
     Cube bestCube; //Cube terbaik
 
 public:
@@ -42,8 +44,16 @@ public:
     //Dapatkan Cube terakhir
     Cube getBestCube() const;
 
+    //Dapatkan Objective Function Sequence
+    vector<int> getObjFuncSeq() const;
+
+    //Dapatkan Local Optimal Seq
+    vector<double> SA::getLocalOptSeq() const;
+
     //Simulated Annealing
     void simulatedAnnealing();
+
+    
 
     
 };

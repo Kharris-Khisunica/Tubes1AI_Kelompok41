@@ -6,19 +6,22 @@
         return currtemp*rate;
     }
 
+    bool isOptimal(Cube nowCube, Cube neighborCube){
+        double stateValueCurr = nowCube.objectiveFunction();
+        double stateValueNeig = neighborCube.objectiveFunction();
+        double deltaE = stateValueNeig - stateValueCurr;
+
+        return deltaE > 0;
+    }
     bool SA::isAccepted(Cube nowCube,Cube neighborCube, double currTemp){
 
         double stateValueCurr = nowCube.objectiveFunction();
         double stateValueNeig = neighborCube.objectiveFunction();
-        // TENTUIN, DELTA E nya mau gimana
+    
         double deltaE = stateValueNeig - stateValueCurr;
 
-        if(deltaE > 0){
-            return true;
-        }
-        else{
-            return exp(-deltaE/currTemp) > cutoff;
-        }
+        return exp(-deltaE/currTemp) > cutoff && deltaE <= 0;
+        
     }
 
     pair<int*, int*> SA::generateNeighborLoc(){
@@ -56,13 +59,21 @@
 
 
             // Cek Acceptability
-            if(isAccepted(currCube, neigCube, currTemp)){
+            
+            if(isOptimal(currCube, neigCube)){
                 currCube = neigCube;
                 cubeSeq.push_back(currCube);
+                ObjFuncSeq.push_back(currCube.objectiveFunction());
+                localOptSeq.push_back(1.0);
+                bestCube = currCube;
+            }
+            else if(isAccepted(currCube, neigCube, currTemp)){
+                currCube = neigCube;
+                cubeSeq.push_back(currCube);
+                ObjFuncSeq.push_back(currCube.objectiveFunction());
+                localOptSeq.push_back(currCube.objectiveFunction());
                 
-                if(currCube.objectiveFunction() > bestCube.objectiveFunction()){
-                    bestCube = currCube;
-                }
+
             }
 
             //Atur currIter dan currTemp
@@ -81,4 +92,12 @@
     
     Cube SA::getBestCube() const{
         return bestCube;
+    }
+
+    vector<int> SA::getObjFuncSeq() const{
+        return ObjFuncSeq;
+    }
+
+    vector<double> SA::getLocalOptSeq() const{
+        return localOptSeq;
     }
