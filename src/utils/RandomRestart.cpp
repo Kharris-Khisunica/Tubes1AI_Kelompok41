@@ -2,8 +2,8 @@
 #include <random>
 #include <climits>
 
-RandomRestart::RandomRestart(Cube init, int maxRestarts) 
-    : LocalSearch(init), maxRestarts(maxRestarts) {
+RandomRestart::RandomRestart(Cube init, int maxRestarts, int maxIterationsPerRestart) 
+    : LocalSearch(init), maxRestarts(maxRestarts), maxIterationsPerRestart(maxIterationsPerRestart) {
     bestObjectiveValue = INT_MIN;
 }
 

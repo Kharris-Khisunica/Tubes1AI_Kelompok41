@@ -14,7 +14,7 @@ private:
     Cube bestState;
 
 public:
-    RandomRestart(Cube init, int maxRestarts);
+    RandomRestart(Cube init, int maxRestarts, int maxIterationsPerRestart);
 
     void hillClimbingIteration(int maxIterations); 
     void Algorithm();

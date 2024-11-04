@@ -1,7 +1,7 @@
 #include "../header/Sideways.h"
 
 // Constructor
-Sideways::Sideways(Cube init, int sidewaysLimit) : LocalSearch(init), sidewaysMoveLimit(sidewaysLimit) {}
+Sideways::Sideways(Cube init, int sidewaysLimit) : LocalSearch(init), sidewaysMoveLimit(sidewaysLimit)  {}
 
 
 void Sideways::Algorithm() {
