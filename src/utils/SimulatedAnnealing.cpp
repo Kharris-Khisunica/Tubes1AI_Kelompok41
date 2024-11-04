@@ -58,4 +58,6 @@
 
     void SimulatedAnnealing::addNextStep(Cube nextState, int value1, int value2, int value3)
     {
+        allStep.emplace_back(nextState, value1, value2,value3);
+        totalStep++;
     }
