@@ -9,7 +9,7 @@ void Sideways::Algorithm() {
 
     currentState = initialState;
     int currentObjectiveValue = currentState.objectiveFunction();
-
+    int sidewaysMoveCount = 0;
     bool foundBetter = true;
 
     while (foundBetter) {
@@ -26,12 +26,21 @@ void Sideways::Algorithm() {
             int currentValue1 = std::get<2>(neighborTuple);
             int currentValue2 = std::get<3>(neighborTuple);
 
-            if (neighborObjectiveValue >= bestNeighborValue) {
+            if (neighborObjectiveValue > bestNeighborValue) {
+                // Found a better neighbor
                 bestNeighbor = neighbor;
                 bestNeighborValue = neighborObjectiveValue;
                 value1 = currentValue1;
                 value2 = currentValue2;
                 foundBetter = true;
+                sidewaysMoveCount = 0; // Reset sideways move count when finding a better state
+            } else if (neighborObjectiveValue == bestNeighborValue && sidewaysMoveCount < sidewaysMoveLimit) {
+                // Allow sideways move
+                bestNeighbor = neighbor;
+                value1 = currentValue1;
+                value2 = currentValue2;
+                foundBetter = true;
+                sidewaysMoveCount++;
             }
         }
 
@@ -39,6 +48,11 @@ void Sideways::Algorithm() {
             currentState = bestNeighbor;
             currentObjectiveValue = bestNeighborValue;
             addNextStep(currentState, value1, value2);
+        }
+
+        // Break if only sideways moves are being made and limit is reached
+        if (sidewaysMoveCount >= sidewaysMoveLimit && !foundBetter) {
+            break;
         }
     }
 
