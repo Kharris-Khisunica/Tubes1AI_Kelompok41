@@ -61,7 +61,11 @@ int main(int argc, char* argv[]) {
 
             stepNumber++;
         }
-    } else {
+    }
+    else if (algorithm == "GeneticAlgorithm") {
+        
+    }
+    else {
         cerr << "Unknown algorithm: " << algorithm << endl;
         outputFile.close();
         return 1;

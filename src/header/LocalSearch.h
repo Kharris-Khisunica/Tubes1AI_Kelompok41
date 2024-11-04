@@ -15,8 +15,8 @@ protected:
     Cube finalState;
     double timeTaken;
     int totalState;
-
     bool found;
+    std::vector<std::tuple<Cube, int, int, int>> neighborValues;
 
     // List Semua Step
     vector<tuple<Cube, int, int>> allStep;
@@ -41,7 +41,7 @@ public:
 
     // Fungsi Generate Neighbor
     tuple<Cube, int, int, int> generateRandomNeighbor(Cube state);
-    vector<tuple<Cube, int, int, int>> generateAllNeighbors();
+    void generateAllNeighbors();
 
     // Fungsi Generate Random Value
     int generateRandomInteger(int minValue, int maxValue);

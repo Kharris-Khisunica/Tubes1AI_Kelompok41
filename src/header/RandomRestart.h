@@ -16,7 +16,6 @@ private:
 public:
     RandomRestart(Cube init, int maxRestarts, int maxIterationsPerRestart);
 
-    void generateAllNeighbors() override;
     void hillClimbingIteration(int maxIterations); 
     void Algorithm();
 

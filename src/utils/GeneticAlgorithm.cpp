@@ -25,7 +25,7 @@ tuple<Cube, int> GeneticAlgorithm::chooseParent(vector<tuple<Cube, int>> &curren
     }
 
     vector<double> wheel(populationSize);
-    wheel[0] = get<1>(currentPopulation[0]) / (float) sumObjectiveValue;
+    wheel[0] = get<1>(currentPopulation[0]) / (float) sumObjectiveValue * (-1);
 
     for (int i = 1; i < populationSize; ++i)
     {
@@ -91,6 +91,24 @@ void GeneticAlgorithm::Algorithm()
             nextPopulation.insert(nextPopulation.end(), children.begin(), children.end());
         }
 
+        tuple<Cube, int> bestIndividual;
+        int bestObjectiveValue = -999999;
+        int sumObjectiveValue = 0;
+
+        for (int i = 0; i < nextPopulation.size(); i++)
+        {
+            int objectiveValue = get<1>(nextPopulation[i]);
+            sumObjectiveValue += objectiveValue;
+
+            if (objectiveValue > bestObjectiveValue)
+            {
+                bestIndividual = nextPopulation[i];
+                bestObjectiveValue = objectiveValue;
+            }
+        }
+
+        addNextStep(get<0>(bestIndividual), get<1>(bestIndividual), sumObjectiveValue / nextPopulation.size());
+        
         currentPopulation = nextPopulation;
         currentIteration++;
     }
@@ -267,13 +285,14 @@ tuple<Cube, int> GeneticAlgorithm::chooseBestIndividual(vector<tuple<Cube, int>>
 {
     tuple<Cube, int> bestIndividual;
     int bestObjectiveValue = -999999;
-    int bestIdx = -1;
 
     for (int i = 0; i < population.size(); i++)
     {
-        if (get<1>(population[i]) > bestObjectiveValue)
+        int objectiveValue = get<1>(population[i]);
+        if (objectiveValue > bestObjectiveValue)
         {
             bestIndividual = population[i];
+            bestObjectiveValue = objectiveValue;
         }
     }
 

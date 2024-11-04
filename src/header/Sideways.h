@@ -13,8 +13,6 @@ private:
 public:
     Sideways(Cube init, int sidewaysLimit);
 
-    void generateAllNeighbors() override;
-
     void Algorithm();
 };
 

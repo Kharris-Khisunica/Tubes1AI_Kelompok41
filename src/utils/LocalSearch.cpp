@@ -75,9 +75,8 @@ tuple<Cube, int, int, int> LocalSearch::generateRandomNeighbor(Cube state)
     return make_tuple(neighbor, neighbor.objectiveFunction(), value1, value2);
 }
 
-std::vector<std::tuple<Cube, int, int, int>> LocalSearch::generateAllNeighbors() {
-    vector<tuple<Cube, int, int, int>> neighborValues;
-
+void LocalSearch::generateAllNeighbors() {
+    neighborValues.clear();
     for (int x1 = 0; x1 < initialState.getSize(); ++x1) {
         for (int y1 = 0; y1 < initialState.getSize(); ++y1) {
             for (int z1 = 0; z1 < initialState.getSize(); ++z1) {
@@ -99,8 +98,6 @@ std::vector<std::tuple<Cube, int, int, int>> LocalSearch::generateAllNeighbors()
             }
         }
     }
-
-    return neighborValues;
 }
 
 int LocalSearch::generateRandomInteger(int minValue, int maxValue)
