@@ -18,7 +18,7 @@ Local Search Algorithm / Algoritma Pencarian Lokal merupakan algoritma pengoptim
 ## Cara Menjalankan Program
 
 1. Clone repository ini dengan perintah `https://github.com/Kharris-Khisunica/Tubes1AI_Kelompok41.git`
-2. Buka root directory menggunakan *terminal WSL*. Bila tidak menggunakan terminal WSL, maka kemungkinan program akan error.
+2. Buka root directory menggunakan **terminal WSL**. Bila tidak menggunakan terminal WSL, maka kemungkinan program akan error.
 3. Bila belum melakukan instalasi numpy, tkinter, dan/atau matplotlib, lakukan instalasi ketiga dependensi tersebut (misalnya dengan perintah `pip install numpy` dan/atau `pip install matplotlib`)
 4. Jalankan perintah `make clean` lalu `make` pada root direktori di terminal WSL untuk melakukan kompilasi program.
 3. Jalankan perintah `python main.py` atau `python3 main.py` pada root direktori di terminal WSL untuk menjalankan program.
