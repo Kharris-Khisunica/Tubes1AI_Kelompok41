@@ -13,7 +13,7 @@ void RandomRestart::hillClimbingIteration(int maxIterations) {
     bool foundBetter = true;
 
     while (foundBetter && iterations < maxIterations) {
-        foundBetter = false;
+        foundBetter = false; 
         generateAllNeighbors();
 
         for (const auto &neighborTuple : neighborValues) {
@@ -29,7 +29,7 @@ void RandomRestart::hillClimbingIteration(int maxIterations) {
 
                 addNextStep(currentState, swappedValue1, swappedValue2);
                 iterations++;
-                break; 
+                break;
             }
         }
     }
@@ -42,16 +42,23 @@ void RandomRestart::hillClimbingIteration(int maxIterations) {
     }
 }
 
+
 Cube generateRandomState(Cube& initialCube) {
     Cube randomCube = initialCube;
     std::random_device rd;
     std::mt19937 gen(rd());
     
+    string str;
+    // cout << "sldkfjlsd";
+    // cin >> str;
     int size = initialCube.getSize();
     // MODIF DI SINI
     int numSwaps = 100; 
     
     for (int i = 0; i < numSwaps; i++) {
+        string str;
+    // cout << "sldkfjlsd";
+    // cin >> str;
         std::uniform_int_distribution<> dis(0, size - 1);
         int x1 = dis(gen), y1 = dis(gen), z1 = dis(gen);
         int x2 = dis(gen), y2 = dis(gen), z2 = dis(gen);
@@ -68,6 +75,8 @@ void RandomRestart::Algorithm() {
     auto start = high_resolution_clock::now();
 
     for (int restart = 0; restart < maxRestarts; restart++) {
+        string str;
+
         currentState = generateRandomState(initialState);
         
         hillClimbingIteration(maxIterationsPerRestart);

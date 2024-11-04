@@ -1,5 +1,5 @@
 
-#include "./header/SimulatedAnnealing.h"
+#include "../header/SimulatedAnnealing.h"
 
     SimulatedAnnealing::SimulatedAnnealing(Cube init, double init_temp, double cutoff, double coolingRate, double minTemp, int maxIter, int totalLocalOptCount)
     : LocalSearch(init), init_temp(init_temp), cutoff(cutoff), coolingRate(coolingRate), minTemp(minTemp), maxIter(maxIter), totalLocalOptCount(totalLocalOptCount) {}

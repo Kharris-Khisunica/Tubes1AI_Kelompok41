@@ -7,7 +7,7 @@
 
 class Sideways : public LocalSearch {
 private:
-    std::vector<std::tuple<Cube, int, int, int>> neighborValues;
+    // std::vector<std::tuple<Cube, int, int, int>> neighborValues;
     int sidewaysMoveLimit;  
 
 public:
