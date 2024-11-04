@@ -108,8 +108,8 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (algorithm == "SimulatedAnnealing"){
-         const double init_temp = 100;
-        const double cutoff = 0.5; //Batas minimum state value kalau lebih jelek
+        const double init_temp = 100;
+        const double cutoff = 0.5; 
         const double coolingRate = 1 - 0.0001;
         const double minTemp = 1e-10;
         const int maxIter = 1000;
@@ -117,6 +117,7 @@ int main(int argc, char* argv[]) {
 
         SimulatedAnnealing sa(initialCube, init_temp, cutoff, coolingRate, minTemp, maxIter, totalLocalOptCount);
         sa.Algorithm();
+
         vector<tuple<Cube, int, int>> steps = sa.getAllSteps();
         int totalSteps = steps.size();
         double timeTaken = sa.getTimeTaken();
